@@ -8,17 +8,19 @@ from sports.validators import validate_id_center, validate_field_number, validat
 
 
 class SportCenter(models.Model):
+    id = models.IntegerField(primary_key=True)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     name = models.TextField(validators=[validate_center_name])
     city = models.TextField(validators=[RegexValidator(r'^[A-Za-z ]{1,100}$')])
-    phone_number = models.IntegerField(validators=[RegexValidator(r'^[0-9]{8,10}$')])
+    phone_number = models.TextField(validators=[RegexValidator(r'^[0-9]{8,10}$')])
 
     def __str__(self) -> str:
         return str(self.id)
 
 
 class SportCampo(models.Model):
-    field_number = models.IntegerField(validators=[validate_field_number], unique=True)
+    id = models.IntegerField(primary_key=True)
+    field_number = models.IntegerField(validators=[validate_field_number], unique=False)
     sport_type = models.CharField(max_length=20, validators=[RegexValidator(r'^(Football|Volleyball|Basketball)$')])
     id_center = models.ForeignKey(SportCenter, on_delete=models.CASCADE)
     description = models.TextField(blank=True,
@@ -27,5 +29,3 @@ class SportCampo(models.Model):
 
     def __str__(self) -> str:
         return str(self.field_number + " " + self.sport_type)
-
-

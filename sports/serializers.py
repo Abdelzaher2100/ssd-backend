@@ -9,13 +9,25 @@ class CampoSerializer(serializers.ModelSerializer):
         model = SportCampo
 
 
-class SportCenterSerializer(serializers.ModelSerializer):
+class AddSportCenterSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('author', 'name', 'city', 'phone_number')
+        model = SportCenter
+
+
+class SportCenterSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('id', 'author', 'name', 'city', 'phone_number')
         model = SportCenter
 
 
 class UserEditSportCenterCampiSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('field_number', 'sport_type', 'description', 'price')
+        model = SportCampo
+
+
+class AddCampoSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('field_number', 'sport_type', 'id_center', 'description', 'price')
         model = SportCampo

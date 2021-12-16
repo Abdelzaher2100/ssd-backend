@@ -1,28 +1,17 @@
 from django.shortcuts import redirect
 from rest_framework import viewsets, generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 from .models import SportCampo, SportCenter
 from .permissions import IsAuthorOrReadOnly, IsUser
-from .serializers import CampoSerializer, SportCenterSerializer, UserEditSportCenterCampiSerializer
-
-
-# class CampoViewSet(viewsets.ModelViewSet):
-#     permission_classes = [IsAuthorOrReadOnly, IsAuthenticated]
-#     queryset = Campo.objects.all()
-#     serializer_class = CampoSerializer
-#
-#
-# class SportCenterViewSet(viewsets.ModelViewSet):
-#     # permission_classes =[permissions.IsAuthenticatedOrReadOnly]
-#     permission_classes = [IsAuthorOrReadOnly, IsAuthenticated]
-#     queryset = SportCenter.objects.all()
-#     serializer_class = SportCenterSerializer
+from .serializers import CampoSerializer, SportCenterSerializer, UserEditSportCenterCampiSerializer, AddCampoSerializer, \
+    AddSportCenterSerializer
 
 
 class UserSportCenterAddCampo(generics.CreateAPIView):
     permission_classes = [IsUser]
-    serializer_class = CampoSerializer
+    serializer_class = AddCampoSerializer
 
     def perform_create(self, serializer):
         serializer.save()
@@ -30,7 +19,7 @@ class UserSportCenterAddCampo(generics.CreateAPIView):
 
 class UserAddSportCenter(generics.CreateAPIView):
     permission_classes = [IsUser]
-    serializer_class = SportCenterSerializer
+    serializer_class = AddSportCenterSerializer
 
     def perform_create(self, serializer):
         serializer.save()
@@ -41,7 +30,8 @@ class UserShowSportCenters(generics.ListAPIView):
     serializer_class = SportCenterSerializer
 
     def get_queryset(self):
-        return SportCenter.objects.filter()
+        user_id = self.request.user.id
+        return SportCenter.objects.filter(author=user_id)
 
 
 class UserShowSportCenterCampi(generics.ListAPIView):
@@ -76,5 +66,4 @@ class UserEditSportCenterCampi(generics.RetrieveUpdateDestroyAPIView):
 #     def get_queryset(self):
 #         campo = Campo.objects.filter(sport_type='Football')
 #         campo.delete()
-#         response = redirect('http://127.0.0.1:8000/api/v1/sport-center')
-#         return response
+#         response = redirect('http://127.0.0.1:8000/api/v1/sport-center')#         return response

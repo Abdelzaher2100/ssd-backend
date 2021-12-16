@@ -8,7 +8,7 @@ urlpatterns = [
 
     path('sport-center/add/campo/', UserSportCenterAddCampo.as_view()),
     path('sport-center/add', UserAddSportCenter.as_view()),
-    path('sport-center', UserShowSportCenters.as_view()),
+    path('sport-center/', UserShowSportCenters.as_view()),
     path('sport-center/show/campi/id_center=<int:id_center>', UserShowSportCenterCampi.as_view()),
     # path('sport-center/del/campo', DeleteCampo.as_view()),
     path('sport-center/show/campi/id_center=<int:id_center>/sport_type=<str:sport_type>',
