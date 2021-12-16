@@ -48,8 +48,32 @@ def test_campo_sport_type_empty_raises_exception(db):
         campo.full_clean()
 
 
+def test_campo_sport_type_empty_not_allowed_raises_exception(db):
+    campo = mixer.blend('sports.SportCampo', field_number=1, sport_type='ciao ', description='ciao')
+    with pytest.raises(ValidationError):
+        campo.full_clean()
+
+
 def test_campo_price_negative_raises_exception(db):
-    campo = mixer.blend('sports.SportCampo', field_number=1, sport_type='Football ', description='ciao', price=-2)
+    campo = mixer.blend('sports.SportCampo', field_number=1, sport_type='Football', description='ciao', price=-2)
+    with pytest.raises(ValidationError):
+        campo.full_clean()
+
+
+def test_campo_price_equal_0_raises_exception(db):
+    campo = mixer.blend('sports.SportCampo', field_number=1, sport_type='Football', description='ciao', price=0)
+    with pytest.raises(ValidationError):
+        campo.full_clean()
+
+
+def test_campo_field_number_negative_raises_exception(db):
+    campo = mixer.blend('sports.SportCampo', field_number=-1, sport_type='Football', description='ciao', price=5)
+    with pytest.raises(ValidationError):
+        campo.full_clean()
+
+
+def test_campo_field_number_equal_0_raises_exception(db):
+    campo = mixer.blend('sports.SportCampo', field_number=0, sport_type='Football', description='ciao', price=5)
     with pytest.raises(ValidationError):
         campo.full_clean()
 
@@ -74,11 +98,9 @@ def test_sport_center_phone_number_is_not_valid_raises_exception(db):
     with pytest.raises(ValidationError):
         sport_center.full_clean()
 
-# def test_validate_length():
-#     with pytest.raises(ValidationError):
-#         validate_length("")
-#
-#
-# def test_validate_id():
-#     with pytest.raises(ValidationError):
-#         validate_id(-5)
+
+def test_sport_center_phone_number_string_raises_exception(db):
+    sport_center = mixer.blend('sports.SportCenter', auther=1, name='Cus Cosenza', city='Cosenza',
+                               phone_number='ciao')
+    with pytest.raises(ValidationError):
+        sport_center.full_clean()
